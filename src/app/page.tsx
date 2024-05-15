@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 import mainData from "@/data/main-data";
 import { images } from "@/data";
@@ -49,37 +50,32 @@ export default function Home() {
   }, []);
 
   const [imageOne, imageTwo] = images.map((image) => image.src);
-
-  console.log(imageOne, imageTwo);
+  const [altOne, altTwo] = images.map((image) => image.alt);
 
   return (
     <main
-      className={`w-screen
-         text-white
-      relative h-screen flex items-center justify-center`}
+      className={`w-screen text-white relative h-screen flex items-center justify-center`}
     >
-      <div
-        style={{
-          backgroundImage: `url(${imageOne})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-        className={`flex-1 h-screen`}
-      >
-        .
+      <div className="flex-1 relative h-screen">
+        <Image
+          className=" h-full object-cover bg-center bg-cover"
+          loading="eager"
+          src={imageOne}
+          layout="fill"
+          alt={altOne}
+        />
       </div>
-      <div
-        style={{
-          backgroundImage: `url(${imageTwo})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-        className={`flex-1 h-screen`}
-      >
-        .
+      <div className="flex-1 relative h-screen">
+        <Image
+          className="h-full object-cover bg-center bg-cover"
+          loading="eager"
+          layout="fill"
+          src={imageTwo}
+          alt={altTwo}
+        />
       </div>
 
-      <div className="absolute flex flex-col justify-between h-screen py-10">
+      <div className="absolute z-50 flex flex-col justify-between h-screen py-10">
         <div className="flex flex-col items-center mt-56">
           <h1 className="mb-10 text-4xl text-clamp-2xl tracking-[10px]">
             {mainData.title}
