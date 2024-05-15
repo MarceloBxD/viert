@@ -53,7 +53,9 @@ export default function Home() {
   console.log(imageOne, imageTwo);
 
   return (
-    <main className="w-screen h-screen flex items-center justify-center">
+    <main
+      className={`w-screen  relative h-screen flex items-center justify-center`}
+    >
       <div
         style={{
           backgroundImage: `url(${imageOne})`,
@@ -75,29 +77,33 @@ export default function Home() {
         .
       </div>
 
-      {/* <h1 className="mb-10 text-4xl text-clamp-2xl tracking-[10px]">
-        {mainData.title}
-      </h1>
-      <p className="tracking-[8px] text-clamp-xl text-center line-clamp-2 font-montserratt- uppercase">
-        {mainData.description}
-      </p>
-      <div className="hidden md:block">
-        <SocialMediaLinks />
-      </div>
-      <div className="flex flex-col items-center absolute bottom-20">
-        <div className="flex items-center gap-3 ">
-          <h2 className="font-baskervville md:hidden">
-            {mainData.contact.title}
-          </h2>
-          <div className="md:hidden">
+      <div className="absolute flex flex-col justify-between h-screen py-10">
+        <div className="flex flex-col items-center mt-56">
+          <h1 className="mb-10 text-4xl text-clamp-2xl tracking-[10px]">
+            {mainData.title}
+          </h1>
+          <p className="tracking-[8px] text-clamp-xl text-center line-clamp-2 font-montserratt- uppercase">
+            {mainData.description}
+          </p>
+          <div className="hidden md:block">
             <SocialMediaLinks />
           </div>
         </div>
-        <div className="flex gap-3 mt-5">
-          <p>{mainData.address.street}</p> |{" "}
-          <p>{mainData.address.neighborhood}</p>
+        <div className="flex flex-col items-center">
+          <div className="flex items-center gap-3 ">
+            <h2 className="font-baskervville md:hidden">
+              {mainData.contact.title}
+            </h2>
+            <div className="md:hidden">
+              <SocialMediaLinks />
+            </div>
+          </div>
+          <div className="flex gap-3 mt-5">
+            <p>{mainData.address.street}</p> |{" "}
+            <p>{mainData.address.neighborhood}</p>
+          </div>
         </div>
-      </div> */}
+      </div>
     </main>
   );
 }
