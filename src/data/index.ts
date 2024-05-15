@@ -1,2 +1,2 @@
 export { default as mainData } from "./main-data";
-export { default as images } from "./images/index";
+export { default as IMAGES } from "./images/index";

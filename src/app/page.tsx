@@ -5,19 +5,17 @@ import Link from "next/link";
 import Image from "next/image";
 
 import mainData from "@/data/main-data";
-import { images } from "@/data";
+import { IMAGES } from "@/data";
 
-const TIME_CHANGER = 10;
-const { yellow, gray, lightAndDark, redAndOrange } = images;
+import { gsap } from "gsap";
+
+const IMAGES_TIME_CHANGER = 7;
 
 const SocialMediaLinks = () => {
   return (
     <ul className="flex">
       {mainData.contact.medias.map((media, index) => (
-        <li
-          className={`first:after:content-['/'] md:first:after:content-['|'] tracking-wider`}
-          key={index}
-        >
+        <li className={`first:after:content-['/'] tracking-wider`} key={index}>
           <Link
             href={media.href}
             passHref
@@ -32,19 +30,53 @@ const SocialMediaLinks = () => {
     </ul>
   );
 };
+const { yellow, gray, lightAndDark, redAndOrange } = IMAGES.DESKTOP_IMAGES;
 
 export default function Home() {
   const [images, setImages] = useState(yellow);
+  const [isMobile, setIsMobile] = useState(
+    window.innerWidth < 768 ? true : false
+  );
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, [isMobile, setIsMobile]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setImages((prevImages) => {
-        if (prevImages === yellow) return gray;
-        if (prevImages === gray) return lightAndDark;
-        if (prevImages === lightAndDark) return redAndOrange;
-        if (prevImages === redAndOrange) return yellow;
+        const imageList = [yellow, gray, lightAndDark, redAndOrange];
+        const nextImages =
+          imageList[(imageList.indexOf(prevImages) + 1) % imageList.length];
+
+        // Realize a animação de fade
+        gsap.fromTo(
+          ".mobile-img",
+          {
+            opacity: 0, // Comece com opacidade 0
+          },
+          {
+            duration: 1.3, // Duração do fade
+            opacity: 1, // Animação para opacidade 1
+            onComplete: () => {
+              setImages(nextImages);
+            },
+          }
+        );
+
+        return nextImages;
       });
-    }, TIME_CHANGER * 1000);
+      setIdx((prevIdx) =>
+        prevIdx + 1 === IMAGES.MOBILE_IMAGES.length ? 0 : prevIdx + 1
+      );
+    }, IMAGES_TIME_CHANGER * 1000);
 
     return () => clearInterval(interval);
   }, []);
@@ -56,45 +88,58 @@ export default function Home() {
     <main
       className={`w-screen text-white relative h-screen flex items-center justify-center`}
     >
-      <div className="flex-1 relative h-screen">
-        <Image
-          className=" h-full object-cover bg-center bg-cover"
-          loading="eager"
-          src={imageOne}
-          layout="fill"
-          alt={altOne}
-        />
-      </div>
-      <div className="flex-1 relative h-screen">
-        <Image
-          className="h-full object-cover bg-center bg-cover"
-          loading="eager"
-          layout="fill"
-          src={imageTwo}
-          alt={altTwo}
-        />
-      </div>
+      {!isMobile && (
+        <>
+          <div className="flex-1 relative h-screen">
+            <Image
+              className={`h-full ${
+                imageOne === "/assets/gray.jpeg" ? "bg-bottom" : "bg-center"
+              } object-cover bg-cover brightness-50`}
+              loading="lazy"
+              src={imageOne}
+              layout="fill"
+              alt={altOne}
+            />
+          </div>
+          <div className="flex-1 relative h-screen">
+            <Image
+              className="h-full brightness-50 object-cover bg-center bg-cover"
+              loading="lazy"
+              layout="fill"
+              src={imageTwo}
+              alt={altTwo}
+            />
+          </div>
+        </>
+      )}
+
+      {isMobile && (
+        <div className="relative h-screen w-full">
+          <Image
+            className="h-full object-cover bg-center bg-cover brightness-50 mobile-img "
+            loading="eager"
+            layout="fill"
+            src={IMAGES.MOBILE_IMAGES[idx].src}
+            alt={altOne}
+          />
+        </div>
+      )}
 
       <div className="absolute z-50 flex flex-col justify-between h-screen py-10">
-        <div className="flex flex-col items-center mt-56">
-          <h1 className="mb-10 text-4xl text-clamp-2xl tracking-[10px]">
+        <div className="flex flex-col items-center mt-[90%]">
+          <h1 className="mb-10 text-6xl text-clamp-2xl tracking-[10px]">
             {mainData.title}
           </h1>
-          <p className="tracking-[8px] text-clamp-xl text-center line-clamp-2 font-montserratt- uppercase">
+          <p className="tracking-[8px] text-clamp-xl text-center line-clamp-2 font-baskervville uppercase">
             {mainData.description}
           </p>
-          <div className="hidden md:block">
-            <SocialMediaLinks />
-          </div>
         </div>
         <div className="flex flex-col items-center">
           <div className="flex items-center gap-3 ">
-            <h2 className="font-baskervville md:hidden">
+            <h2 className="font-baskervville tracking-[4px]">
               {mainData.contact.title}
             </h2>
-            <div className="md:hidden">
-              <SocialMediaLinks />
-            </div>
+            <SocialMediaLinks />
           </div>
           <div className="flex gap-3 mt-5">
             <p>{mainData.address.street}</p> |{" "}

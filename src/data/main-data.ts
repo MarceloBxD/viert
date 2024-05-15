@@ -1,5 +1,3 @@
-
-
 const mainData = {
   title: "Viert",
   description: "Em breve um novo site",
