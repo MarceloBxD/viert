@@ -13,6 +13,14 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      fontFamily: {
+        montserrat: ["Montserrat", "sans-serif"],
+        baskervville: ["Baskervville", "serif"],
+      },
+      fontSize: {
+        "clamp-xl": "clamp(1rem, 2vw + 1rem, 2rem)",
+        "clamp-2xl": "clamp(1.5rem, 2.5vw + 1.5rem, 3rem)",
+      },
     },
   },
   plugins: [],
