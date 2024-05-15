@@ -54,7 +54,9 @@ export default function Home() {
 
   return (
     <main
-      className={`w-screen  relative h-screen flex items-center justify-center`}
+      className={`w-screen
+         text-white
+      relative h-screen flex items-center justify-center`}
     >
       <div
         style={{

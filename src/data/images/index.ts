@@ -13,31 +13,31 @@ const images = {
   ],
   gray: [
     {
-      src: `${IMAGES_PATH}/gray.jpg`,
+      src: `${IMAGES_PATH}/gray.jpeg`,
       alt: "Women in gray dress without showing face",
     },
     {
-      src: `${IMAGES_PATH}/gray-two.jpg`,
+      src: `${IMAGES_PATH}/gray-two.jpeg`,
       alt: "Women in gray dress with all body showing",
     },
   ],
   lightAndDark: [
     {
-      src: `${IMAGES_PATH}/black-and-white.jpg`,
+      src: `${IMAGES_PATH}/black-and-white.jpeg`,
       alt: "Women in white dress with light background",
     },
     {
-      src: `${IMAGES_PATH}/black-and-white-two.jpg`,
+      src: `${IMAGES_PATH}/black-and-white-two.jpeg`,
       alt: "Women in white dress with dark background",
     },
   ],
   redAndOrange: [
     {
-      src: `${IMAGES_PATH}/colorful.jpg`,
+      src: `${IMAGES_PATH}/red.jpeg`,
       alt: "Flowery dress with red background",
     },
     {
-      src: `${IMAGES_PATH}/colorful-two.jpg`,
+      src: `${IMAGES_PATH}/orange.jpeg`,
       alt: "Women dressesd with orange background",
     },
   ],
