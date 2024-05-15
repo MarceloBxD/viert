@@ -1,13 +1,13 @@
-const IMAGES_PATH = "/images";
+const IMAGES_PATH = "/assets";
 
 const images = {
   yellow: [
     {
-      src: `${IMAGES_PATH}/yellow.jpg`,
+      src: `${IMAGES_PATH}/yellow.jpeg`,
       alt: "Women in yellow dress",
     },
     {
-      src: `${IMAGES_PATH}/yellow-two.jpg`,
+      src: `${IMAGES_PATH}/yellow-two.jpeg`,
       alt: "Women crouching in yellow dress",
     },
   ],

@@ -1,17 +1,15 @@
 "use client";
-import mainData from "@/data/main-data";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
+import mainData from "@/data/main-data";
 import { images } from "@/data";
-import { useEffect, useState } from "react";
 
+const TIME_CHANGER = 10;
 const { yellow, gray, lightAndDark, redAndOrange } = images;
 
 const SocialMediaLinks = () => {
-  const [images, setImages] = useState(yellow);
-
-  console.log(images);
-
   return (
     <ul className="flex">
       {mainData.contact.medias.map((media, index) => (
@@ -35,9 +33,49 @@ const SocialMediaLinks = () => {
 };
 
 export default function Home() {
+  const [images, setImages] = useState(yellow);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setImages((prevImages) => {
+        if (prevImages === yellow) return gray;
+        if (prevImages === gray) return lightAndDark;
+        if (prevImages === lightAndDark) return redAndOrange;
+        if (prevImages === redAndOrange) return yellow;
+      });
+    }, TIME_CHANGER * 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const [imageOne, imageTwo] = images.map((image) => image.src);
+
+  console.log(imageOne, imageTwo);
+
   return (
-    <main className="w-full h-[100vh] flex flex-col items-center justify-center">
-      <h1 className="mb-10 text-4xl text-clamp-2xl tracking-[10px]">
+    <main className="w-screen h-screen flex items-center justify-center">
+      <div
+        style={{
+          backgroundImage: `url(${imageOne})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+        className={`flex-1 h-screen`}
+      >
+        .
+      </div>
+      <div
+        style={{
+          backgroundImage: `url(${imageTwo})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+        className={`flex-1 h-screen`}
+      >
+        .
+      </div>
+
+      {/* <h1 className="mb-10 text-4xl text-clamp-2xl tracking-[10px]">
         {mainData.title}
       </h1>
       <p className="tracking-[8px] text-clamp-xl text-center line-clamp-2 font-montserratt- uppercase">
@@ -59,7 +97,7 @@ export default function Home() {
           <p>{mainData.address.street}</p> |{" "}
           <p>{mainData.address.neighborhood}</p>
         </div>
-      </div>
+      </div> */}
     </main>
   );
 }
