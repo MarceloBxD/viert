@@ -15,7 +15,10 @@ const SocialMediaLinks = () => {
   return (
     <ul className="flex">
       {mainData.contact.medias.map((media, index) => (
-        <li className={`first:after:content-['/'] tracking-wider`} key={index}>
+        <li
+          className={`first:after:content-['/'] tracking-wider italic`}
+          key={index}
+        >
           <Link
             href={media.href}
             passHref
@@ -141,7 +144,7 @@ export default function Home() {
         </div>
       )}
 
-      <div className="absolute z-50 flex  h-[50%] bottom-0 flex-col justify-between py-10">
+      <div className="absolute z-50 flex h-[50%] bottom-5 flex-col justify-between py-10">
         <div className="flex flex-col relative items-center ">
           <Image
             layout="fill"
@@ -149,7 +152,7 @@ export default function Home() {
             alt="Logo"
             className="max-w-[300px]  max-h-[120px] mx-auto object-contain "
           />
-          <p className="tracking-[8px] mt-32 text-clamp-xl text-center line-clamp-2 font-baskervville uppercase">
+          <p className="tracking-[6px] md:tracking-[11px] mt-36 text-center font-baskervville uppercase">
             {mainData.description}
           </p>
         </div>
