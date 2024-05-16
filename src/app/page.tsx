@@ -102,7 +102,7 @@ export default function Home() {
 
   return (
     <main
-      className={`w-screen text-white relative h-screen flex items-center justify-center`}
+      className={`w-screen max-h-screen text-white relative flex items-center justify-center`}
     >
       {!isMobile && (
         <>
@@ -141,12 +141,15 @@ export default function Home() {
         </div>
       )}
 
-      <div className="absolute z-50 flex flex-col justify-between h-screen py-10">
-        <div className="flex flex-col items-center mt-[90%]">
-          <h1 className="mb-10 text-6xl text-clamp-2xl tracking-[10px]">
-            {mainData.title}
-          </h1>
-          <p className="tracking-[8px] text-clamp-xl text-center line-clamp-2 font-baskervville uppercase">
+      <div className="absolute z-50 flex  h-[50%] bottom-0 flex-col justify-between py-10">
+        <div className="flex flex-col relative items-center ">
+          <Image
+            layout="fill"
+            src="/assets/brand/logo.png"
+            alt="Logo"
+            className="max-w-[300px]  max-h-[120px] mx-auto object-contain "
+          />
+          <p className="tracking-[8px] mt-32 text-clamp-xl text-center line-clamp-2 font-baskervville uppercase">
             {mainData.description}
           </p>
         </div>
