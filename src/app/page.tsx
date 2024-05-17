@@ -5,47 +5,32 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import mainData from '@/data/main-data';
-import { IMAGES } from '@/data';
+import { DESKTOP_IMAGES, MOBILE_IMAGES } from '@/data';
 
 import { gsap } from 'gsap';
 import RenderConditional from '@/components/RenderConditional/renderConditional.component';
+import SocialMediaLinks from '@/components/SocialMediaLinks/SocialMidiaLinks.component';
+import { useAppContext } from '@/context';
 
 const IMAGES_TIME_CHANGER = 7;
 
-const SocialMediaLinks = () => {
-  return (
-    <ul className="flex">
-      {mainData.contact.medias.map((media, index) => (
-        <li
-          className={`first:after:content-['/'] tracking-wider italic`}
-          key={index}
-        >
-          <Link
-            href={media.href}
-            passHref
-            className="m-2 underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {media.name}
-          </Link>
-        </li>
-      ))}
-    </ul>
-  );
-};
-const { yellow, gray, lightAndDark, redAndOrange } = IMAGES.DESKTOP_IMAGES;
-
 export default function Home() {
-  const [images, setImages] = useState(yellow);
+  const [loading, setLoading] = useState(false);
   const [idx, setIdx] = useState(0);
+  const imagesList = {
+    desktop: DESKTOP_IMAGES,
+    mobile: MOBILE_IMAGES,
+  };
+  const [activeImage, setActiveImage] = useState(imagesList.desktop[idx]);
+  const { isDesktop } = useAppContext()
+
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setImages((prevImages) => {
-        const imageList = [yellow, gray, lightAndDark, redAndOrange];
-        const nextImages =
-          imageList[(imageList.indexOf(prevImages) + 1) % imageList.length];
+      setActiveImage(() => {
+        const nextImages = isDesktop
+          ? imagesList.desktop[idx]
+          : imagesList.mobile[idx];
 
         // Realize a animação de fade
         gsap.fromTo(
@@ -57,7 +42,7 @@ export default function Home() {
             duration: 1.3, // Duração do fade
             opacity: 1, // Animação para opacidade 1
             onComplete: () => {
-              setImages(nextImages);
+              setActiveImage(nextImages);
             },
           },
         );
@@ -69,7 +54,7 @@ export default function Home() {
             duration: 1.3,
             opacity: 1,
             onComplete: () => {
-              setImages(nextImages);
+              setActiveImage(nextImages);
             },
           },
         );
@@ -83,34 +68,70 @@ export default function Home() {
         return nextImages;
       });
       setIdx((prevIdx) =>
-        prevIdx + 1 === IMAGES.MOBILE_IMAGES.length ? 0 : prevIdx + 1,
+        prevIdx === imagesList.desktop.length - 1 ? 0 : prevIdx + 1,
       );
     }, IMAGES_TIME_CHANGER * 1000);
 
     return () => clearInterval(interval);
   }, []);
 
-  const [imageOne, imageTwo] = images.map((image) => image.src);
-  const [altOne, altTwo] = images.map((image) => image.alt);
-
   return (
     <main
       className={`w-screen h-screen text-white relative flex items-center justify-center
         overflow-hidden
       `}
+      onLoad={() => {
+        const isDesktop = window.innerWidth > 768;
+
+        if (isDesktop) {
+          setActiveImage(imagesList.desktop[idx]);
+        } else {
+          setActiveImage(imagesList.mobile[idx]);
+        }
+      }}
     >
+      {loading ? (<>
+        <div className="flex-1 relative h-screen">
+          <Image
+            className={`h-full ${
+              activeImage[0].src === '/assets/gray.jpeg'
+                ? 'bg-bottom'
+                : 'bg-center'
+            } object-cover bg-cover brightness-50 first-img-desktop`}
+            loading="eager"
+            src={activeImage[0].src}
+            layout="fill"
+            alt={activeImage[0].alt}
+          />
+        </div>
+        <div className="flex-1 relative h-screen">
+          <Image
+            className="h-full brightness-50 object-cover bg-center second-img-desktop bg-cover"
+            loading="eager"
+            layout="fill"
+            src={activeImage[1].src}
+            alt={activeImage[1].alt}
+          />
+        </div>
+          
+          
+
+      
+      </>) : (<>
       <RenderConditional
         desktop={
           <>
             <div className="flex-1 relative h-screen">
               <Image
                 className={`h-full ${
-                  imageOne === '/assets/gray.jpeg' ? 'bg-bottom' : 'bg-center'
+                  activeImage[0].src === '/assets/gray.jpeg'
+                    ? 'bg-bottom'
+                    : 'bg-center'
                 } object-cover bg-cover brightness-50 first-img-desktop`}
                 loading="lazy"
-                src={imageOne}
+                src={activeImage[0].src}
                 layout="fill"
-                alt={altOne}
+                alt={activeImage[0].alt}
               />
             </div>
             <div className="flex-1 relative h-screen">
@@ -118,8 +139,8 @@ export default function Home() {
                 className="h-full brightness-50 object-cover bg-center second-img-desktop bg-cover"
                 loading="lazy"
                 layout="fill"
-                src={imageTwo}
-                alt={altTwo}
+                src={activeImage[1].src}
+                alt={activeImage[1].alt}
               />
             </div>
           </>
@@ -131,8 +152,8 @@ export default function Home() {
               object-cover bg-cover brightness-50
               "
               layout="fill"
-              src={IMAGES.MOBILE_IMAGES[idx].src}
-              alt={IMAGES.MOBILE_IMAGES[idx].alt}
+              src={activeImage[0].src}
+              alt={activeImage[0].alt}
             />
           </div>
         }
@@ -162,7 +183,9 @@ export default function Home() {
             <p>{mainData.address.neighborhood}</p>
           </div>
         </div>
-      </div>
+        </div>
+      </>)}
+        
     </main>
   );
 }
