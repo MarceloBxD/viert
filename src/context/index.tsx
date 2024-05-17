@@ -23,7 +23,9 @@ const AppProvider = ({ children }: {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    const value = {};
+    const value = {
+        isDesktop
+    };
 
   return (
     <AppContext.Provider value={value}>
