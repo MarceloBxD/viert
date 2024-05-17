@@ -3,7 +3,7 @@
 import React, { createContext, FC, useEffect, useReducer, useState } from 'react';
 
 interface ContextType {
-    isDesktop: boolean | null;
+    isDesktop: boolean;
 }
 
 export const AppContext = createContext({} as ContextType);
@@ -12,7 +12,7 @@ export const AppContext = createContext({} as ContextType);
 const AppProvider = ({ children }: {
     children: React.ReactNode;
 }) => {
-    const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
+    const [isDesktop, setIsDesktop] = useState<boolean>(true);
     
     const handleResize = () => {
         setIsDesktop(window.innerWidth > 768);

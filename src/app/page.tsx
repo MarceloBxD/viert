@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -12,8 +12,6 @@ import RenderConditional from '@/components/RenderConditional/renderConditional.
 import SocialMediaLinks from '@/components/SocialMediaLinks/SocialMidiaLinks.component';
 import { useAppContext } from '@/context';
 
-const IMAGES_TIME_CHANGER = 7;
-
 export default function Home() {
   const [isIphone, setIsIphone] = useState(false);
   const [idx, setIdx] = useState(0);
@@ -24,7 +22,7 @@ export default function Home() {
   const [activeImage, setActiveImage] = useState(imagesList.desktop[idx]);
   const { isDesktop } = useAppContext();
 
-  const changeImage = () => {
+  const changeImage = useCallback(() => {
     setActiveImage(() => {
       const nextImages = isDesktop
         ? imagesList.desktop[idx]
@@ -32,7 +30,7 @@ export default function Home() {
 
       // Realize a animação de fade
       gsap.fromTo(
-        '.mobile-img',
+        '.img',
         {
           opacity: 0, // Comece com opacidade 0
         },
@@ -42,37 +40,20 @@ export default function Home() {
         },
       );
 
-      gsap.fromTo(
-        '.first-img-desktop',
-        { opacity: 0 },
-        {
-          duration: 1.3,
-          opacity: 1,
-        },
-      );
-
-      gsap.fromTo(
-        '.second-img-desktop',
-        { opacity: 0 },
-        { duration: 1.3, opacity: 1 }, // Adiciona um pequeno atraso para suavidade
-      );
-
       return nextImages;
     });
     setIdx((prevIdx) =>
       prevIdx === imagesList.desktop.length - 1 ? 0 : prevIdx + 1,
     );
-  }
-
-
+  }, [idx, isDesktop, imagesList.desktop, imagesList.mobile]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       changeImage();
-    }, IMAGES_TIME_CHANGER * 1000);
+    }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [changeImage]);
 
   const verifyIfIsIphone = () => {
     const userAgent = window.navigator.userAgent;
@@ -87,7 +68,7 @@ export default function Home() {
     setIsIphone(isIph);
   }, []);
 
-    useEffect(() => {
+  useEffect(() => {
     const disableScrollOnSafari = () => {
       if (navigator.userAgent.indexOf('Safari') !== -1) {
         document.body.style.overflow = 'hidden';
@@ -135,8 +116,8 @@ export default function Home() {
                   activeImage[0].src === '/assets/gray.jpeg'
                     ? 'bg-bottom'
                     : 'bg-center'
-                } object-cover bg-cover brightness-50 first-img-desktop`}
-                loading="lazy"
+                } object-cover opacity-[0] bg-cover brightness-50 img`}
+                loading="eager"
                 src={activeImage[0].src}
                 layout="fill"
                 alt={activeImage[0].alt}
@@ -144,8 +125,8 @@ export default function Home() {
             </div>
             <div className="flex-1 relative h-screen">
               <Image
-                className="h-full brightness-50 object-cover bg-center second-img-desktop bg-cover"
-                loading="lazy"
+                className="h-full opacity-[0] brightness-50 object-cover bg-center img bg-cover"
+                loading="eager"
                 layout="fill"
                 src={activeImage[1].src}
                 alt={activeImage[1].alt}
@@ -156,9 +137,7 @@ export default function Home() {
         mobile={
           <div className="w-full h-full flex items-center justify-center">
             <Image
-              className="mobile-img
-              object-cover bg-cover brightness-50
-              "
+              className="img opacity-[0] object-cover bg-cover brightness-50 "
               layout="fill"
               src={activeImage[0].src}
               alt={activeImage[0].alt}
