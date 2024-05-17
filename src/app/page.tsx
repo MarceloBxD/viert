@@ -15,7 +15,6 @@ import { useAppContext } from '@/context';
 const IMAGES_TIME_CHANGER = 7;
 
 export default function Home() {
-  const [loading, setLoading] = useState(false);
   const [idx, setIdx] = useState(0);
   const imagesList = {
     desktop: DESKTOP_IMAGES,
@@ -88,36 +87,18 @@ export default function Home() {
         } else {
           setActiveImage(imagesList.mobile[idx]);
         }
+
+        window.addEventListener('resize', () => {
+          if (window.innerWidth > 768) {
+            setActiveImage(imagesList.desktop[idx]);
+          } else {
+            setActiveImage(imagesList.mobile[idx]);
+          }
+        });
+
+        return () => window.removeEventListener('resize', () => { });
       }}
     >
-      {loading ? (<>
-        <div className="flex-1 relative h-screen">
-          <Image
-            className={`h-full ${
-              activeImage[0].src === '/assets/gray.jpeg'
-                ? 'bg-bottom'
-                : 'bg-center'
-            } object-cover bg-cover brightness-50 first-img-desktop`}
-            loading="eager"
-            src={activeImage[0].src}
-            layout="fill"
-            alt={activeImage[0].alt}
-          />
-        </div>
-        <div className="flex-1 relative h-screen">
-          <Image
-            className="h-full brightness-50 object-cover bg-center second-img-desktop bg-cover"
-            loading="eager"
-            layout="fill"
-            src={activeImage[1].src}
-            alt={activeImage[1].alt}
-          />
-        </div>
-          
-          
-
-      
-      </>) : (<>
       <RenderConditional
         desktop={
           <>
@@ -184,7 +165,6 @@ export default function Home() {
           </div>
         </div>
         </div>
-      </>)}
         
     </main>
   );
