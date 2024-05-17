@@ -170,7 +170,7 @@ export default function Home() {
       <div
         className={`absolute z-50 flex h-[50%] bottom-5 flex-col justify-between py-10`}
         style={{
-          paddingBottom: isIphone ? '64px' : undefined,
+          paddingBottom: isIphone ? '120px' : undefined,
         }}
       >
         <div className="flex flex-col relative items-center ">
