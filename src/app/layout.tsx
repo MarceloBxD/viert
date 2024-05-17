@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
-import { Inter, Baskervville, Montserrat } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Inter, Baskervville, Montserrat } from 'next/font/google';
+import './globals.css';
+import { AppProvider } from '@/context';
 
-const montserrat = Montserrat({ subsets: ["latin"], weight: ["400"] });
-const baskervville = Baskervville({ subsets: ["latin"], weight: ["400"] });
+const montserrat = Montserrat({ subsets: ['latin'], weight: ['400'] });
+const baskervville = Baskervville({ subsets: ['latin'], weight: ['400'] });
 
 export const metadata: Metadata = {
-  title: "Viert",
-  description: "Em breve um novo site",
+  title: 'Viert',
+  description: 'Em breve um novo site',
 };
 
 export default function RootLayout({
@@ -16,10 +17,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br">
-      <body className={`${montserrat.className} ${baskervville.className}`}>
-        {children}
-      </body>
-    </html>
+    <AppProvider>
+      <html lang="pt-br">
+        <body className={`${montserrat.className} ${baskervville.className}`}>
+          {children}
+        </body>
+      </html>
+    </AppProvider>
   );
 }

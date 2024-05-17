@@ -8,6 +8,7 @@ import mainData from '@/data/main-data';
 import { IMAGES } from '@/data';
 
 import { gsap } from 'gsap';
+import RenderConditional from '@/components/RenderConditional/renderConditional.component';
 
 const IMAGES_TIME_CHANGER = 7;
 
@@ -34,6 +35,9 @@ const SocialMediaLinks = () => {
   );
 };
 const { yellow, gray, lightAndDark, redAndOrange } = IMAGES.DESKTOP_IMAGES;
+
+
+
 
 export default function Home() {
   const [images, setImages] = useState(yellow);
@@ -105,10 +109,11 @@ export default function Home() {
 
   return (
     <main
-      className={`w-screen max-h-screen text-white relative flex items-center justify-center`}
+      className={`w-screen h-screen text-white relative flex items-center justify-center`}
     >
-      {!isMobile && (
-        <>
+      <RenderConditional
+        desktop={(
+ <>
           <div className="flex-1 relative h-screen">
             <Image
               className={`h-full ${
@@ -130,10 +135,9 @@ export default function Home() {
             />
           </div>
         </>
-      )}
+        )}
 
-      {isMobile && (
-        <div className="relative h-screen w-full">
+        mobile={(<div className="relative h-screen w-full">
           <Image
             className="h-full object-cover bg-center  bg-cover brightness-50 mobile-img "
             loading="eager"
@@ -141,8 +145,8 @@ export default function Home() {
             src={IMAGES.MOBILE_IMAGES[idx].src}
             alt={altOne}
           />
-        </div>
-      )}
+        </div>)}
+      />
 
       <div className="absolute z-50 flex h-[50%] bottom-5 flex-col justify-between py-10">
         <div className="flex flex-col relative items-center ">
