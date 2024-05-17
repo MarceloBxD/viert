@@ -56,8 +56,12 @@ export default function Home() {
   }, [changeImage]);
 
   const verifyIfIsIphone = () => {
-    const userAgent = window.navigator.userAgent;
+    const userAgent = window.navigator.userAgent;  
     const isIphone = /iPhone/.test(userAgent);
+
+    if (isIphone && !/CriOS/.test(userAgent)) {
+      return true;
+    }
 
     return isIphone;
   };
@@ -87,25 +91,6 @@ export default function Home() {
       className={`w-screen h-screen text-white relative flex items-center justify-center
         overflow-hidden
       `}
-      onLoad={() => {
-        const isDesktop = window.innerWidth > 768;
-
-        if (isDesktop) {
-          setActiveImage(imagesList.desktop[idx]);
-        } else {
-          setActiveImage(imagesList.mobile[idx]);
-        }
-
-        window.addEventListener('resize', () => {
-          if (window.innerWidth > 768) {
-            setActiveImage(imagesList.desktop[idx]);
-          } else {
-            setActiveImage(imagesList.mobile[idx]);
-          }
-        });
-
-        return () => window.removeEventListener('resize', () => {});
-      }}
     >
       <RenderConditional
         desktop={
@@ -147,23 +132,28 @@ export default function Home() {
       />
 
       <div
-        className={`absolute z-50 flex h-[50%] bottom-5 flex-col justify-between py-10`}
-        style={{
-          paddingBottom: isIphone ? '120px' : undefined,
-        }}
+        className={`absolute z-50 flex  bottom-5 flex-col justify-between py-10 gap-[48px]`}
+       
       >
-        <div className="flex flex-col relative items-center ">
+        <div className={`flex flex-col relative items-center mx-auto`} style={{
+            width: isDesktop ? '300px' : '240px',
+            aspectRatio: 3.91
+            }}>
           <Image
             layout="fill"
             src="/assets/brand/logo.png"
             alt="Logo"
-            className="max-w-[300px]  max-h-[120px] mx-auto object-contain "
           />
-          <p className="tracking-[6px] md:tracking-[11px] mt-36 text-center font-baskervville uppercase">
+        </div>
+        <p className="tracking-[6px] md:tracking-[11px] text-center font-baskervville uppercase " style={{
+          fontSize: isDesktop ? '1.5rem' : '0.92rem',
+          fontWeight: 100,
+          paddingBottom: isIphone ? '32px' : undefined,
+
+          }}>
             {mainData.description}
           </p>
-        </div>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center mt-[120px]">
           <div className="flex items-center gap-3 ">
             <h2 className="font-baskervville tracking-[4px]">
               {mainData.contact.title}

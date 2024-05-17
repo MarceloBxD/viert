@@ -3,7 +3,7 @@ import { Inter, Baskervville, Montserrat } from 'next/font/google';
 import './globals.css';
 import { AppProvider } from '@/context';
 
-const montserrat = Montserrat({ subsets: ['latin'], weight: ['400'] });
+const montserrat = Montserrat({ subsets: ['latin'], weight: ['100','200','300','400','500','600','700','800','900'] });
 const baskervville = Baskervville({ subsets: ['latin'], weight: ['400'] });
 
 export const metadata: Metadata = {
