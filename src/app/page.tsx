@@ -153,7 +153,7 @@ export default function Home() {
           }}>
             {mainData.description}
           </p>
-        <div className="flex flex-col items-center mt-[120px]">
+        <div className={`flex flex-col items-center mt-[${isDesktop ? '120px' : '64px'}]`}>
           <div className="flex items-center gap-3 ">
             <h2 className="font-baskervville tracking-[4px]">
               {mainData.contact.title}
