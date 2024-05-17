@@ -21,8 +21,7 @@ export default function Home() {
     mobile: MOBILE_IMAGES,
   };
   const [activeImage, setActiveImage] = useState(imagesList.desktop[idx]);
-  const { isDesktop } = useAppContext()
-
+  const { isDesktop } = useAppContext();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -96,7 +95,7 @@ export default function Home() {
           }
         });
 
-        return () => window.removeEventListener('resize', () => { });
+        return () => window.removeEventListener('resize', () => {});
       }}
     >
       <RenderConditional
@@ -164,8 +163,7 @@ export default function Home() {
             <p>{mainData.address.neighborhood}</p>
           </div>
         </div>
-        </div>
-        
+      </div>
     </main>
   );
 }
