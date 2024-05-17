@@ -133,7 +133,9 @@ export default function Home() {
 
       <div
         className={`absolute z-50 flex  bottom-5 flex-col justify-between py-10 gap-[48px]`}
-       
+        style={{
+          paddingBottom: isDesktop ? undefined : isIphone ? '120px' : '64px',
+        }}
       >
         <div className={`flex flex-col relative items-center mx-auto`} style={{
             width: isDesktop ? '300px' : '240px',
@@ -148,7 +150,7 @@ export default function Home() {
         <p className="tracking-[6px] md:tracking-[11px] text-center font-baskervville uppercase " style={{
           fontSize: isDesktop ? '1.5rem' : '0.92rem',
           fontWeight: 100,
-          paddingBottom: isIphone ? '32px' : isDesktop ? undefined : '24px',
+          paddingBottom: isDesktop ? undefined : '32px',
 
           }}>
             {mainData.description}
