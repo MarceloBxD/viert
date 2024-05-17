@@ -36,9 +36,6 @@ const SocialMediaLinks = () => {
 };
 const { yellow, gray, lightAndDark, redAndOrange } = IMAGES.DESKTOP_IMAGES;
 
-
-
-
 export default function Home() {
   const [images, setImages] = useState(yellow);
   const [isMobile, setIsMobile] = useState<null | boolean>(null);
@@ -109,43 +106,47 @@ export default function Home() {
 
   return (
     <main
-      className={`w-screen h-screen text-white relative flex items-center justify-center`}
+      className={`w-screen h-screen text-white relative flex items-center justify-center
+        overflow-hidden
+      `}
     >
       <RenderConditional
-        desktop={(
- <>
-          <div className="flex-1 relative h-screen">
+        desktop={
+          <>
+            <div className="flex-1 relative h-screen">
+              <Image
+                className={`h-full ${
+                  imageOne === '/assets/gray.jpeg' ? 'bg-bottom' : 'bg-center'
+                } object-cover bg-cover brightness-50 first-img-desktop`}
+                loading="lazy"
+                src={imageOne}
+                layout="fill"
+                alt={altOne}
+              />
+            </div>
+            <div className="flex-1 relative h-screen">
+              <Image
+                className="h-full brightness-50 object-cover bg-center second-img-desktop bg-cover"
+                loading="lazy"
+                layout="fill"
+                src={imageTwo}
+                alt={altTwo}
+              />
+            </div>
+          </>
+        }
+        mobile={
+          <div className="w-full h-full flex items-center justify-center">
             <Image
-              className={`h-full ${
-                imageOne === '/assets/gray.jpeg' ? 'bg-bottom' : 'bg-center'
-              } object-cover bg-cover brightness-50 first-img-desktop`}
-              loading="lazy"
-              src={imageOne}
+              className="mobile-img
+              object-cover bg-cover brightness-50
+              "
               layout="fill"
-              alt={altOne}
+              src={IMAGES.MOBILE_IMAGES[idx].src}
+              alt={IMAGES.MOBILE_IMAGES[idx].alt}
             />
           </div>
-          <div className="flex-1 relative h-screen">
-            <Image
-              className="h-full brightness-50 object-cover bg-center second-img-desktop bg-cover"
-              loading="lazy"
-              layout="fill"
-              src={imageTwo}
-              alt={altTwo}
-            />
-          </div>
-        </>
-        )}
-
-        mobile={(<div className="relative h-screen w-full">
-          <Image
-            className="h-full object-cover bg-center  bg-cover brightness-50 mobile-img "
-            loading="eager"
-            layout="fill"
-            src={IMAGES.MOBILE_IMAGES[idx].src}
-            alt={altOne}
-          />
-        </div>)}
+        }
       />
 
       <div className="absolute z-50 flex h-[50%] bottom-5 flex-col justify-between py-10">
