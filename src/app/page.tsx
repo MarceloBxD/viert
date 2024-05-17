@@ -15,6 +15,7 @@ import { useAppContext } from '@/context';
 const IMAGES_TIME_CHANGER = 7;
 
 export default function Home() {
+  const [isIphone, setIsIphone] = useState(false);
   const [idx, setIdx] = useState(0);
   const imagesList = {
     desktop: DESKTOP_IMAGES,
@@ -71,6 +72,19 @@ export default function Home() {
     }, IMAGES_TIME_CHANGER * 1000);
 
     return () => clearInterval(interval);
+  }, []);
+
+  const verifyIfIsIphone = () => {
+    const userAgent = window.navigator.userAgent;
+    const isIphone = /iPhone/.test(userAgent);
+
+    return isIphone;
+  };
+
+  useEffect(() => {
+    const isIph = verifyIfIsIphone();
+    console.log('isIph', isIph);
+    setIsIphone(isIph);
   }, []);
 
   return (
@@ -139,7 +153,12 @@ export default function Home() {
         }
       />
 
-      <div className="absolute z-50 flex h-[50%] bottom-5 flex-col justify-between py-10">
+      <div
+        className={`absolute z-50 flex h-[50%] bottom-5 flex-col justify-between py-10`}
+        style={{
+          paddingBottom: isIphone ? '64px' : undefined,
+        }}
+      >
         <div className="flex flex-col relative items-center ">
           <Image
             layout="fill"
