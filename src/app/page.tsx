@@ -87,6 +87,20 @@ export default function Home() {
     setIsIphone(isIph);
   }, []);
 
+    useEffect(() => {
+    const disableScrollOnSafari = () => {
+      if (navigator.userAgent.indexOf('Safari') !== -1) {
+        document.body.style.overflow = 'hidden';
+      }
+    };
+
+    disableScrollOnSafari();
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
+
   return (
     <main
       className={`w-screen h-screen text-white relative flex items-center justify-center
