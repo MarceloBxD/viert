@@ -38,18 +38,7 @@ const { yellow, gray, lightAndDark, redAndOrange } = IMAGES.DESKTOP_IMAGES;
 
 export default function Home() {
   const [images, setImages] = useState(yellow);
-  const [isMobile, setIsMobile] = useState<null | boolean>(null);
   const [idx, setIdx] = useState(0);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, [isMobile, setIsMobile]);
 
   useEffect(() => {
     const interval = setInterval(() => {

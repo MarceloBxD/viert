@@ -2,7 +2,9 @@
 
 import React, { createContext, FC, useEffect, useReducer, useState } from 'react';
 
-interface ContextType {}
+interface ContextType {
+    isDesktop: boolean | null;
+}
 
 export const AppContext = createContext({} as ContextType);
 
