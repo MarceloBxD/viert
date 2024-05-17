@@ -24,51 +24,51 @@ export default function Home() {
   const [activeImage, setActiveImage] = useState(imagesList.desktop[idx]);
   const { isDesktop } = useAppContext();
 
+  const changeImage = () => {
+    setActiveImage(() => {
+      const nextImages = isDesktop
+        ? imagesList.desktop[idx]
+        : imagesList.mobile[idx];
+
+      // Realize a animação de fade
+      gsap.fromTo(
+        '.mobile-img',
+        {
+          opacity: 0, // Comece com opacidade 0
+        },
+        {
+          duration: 1.3, // Duração do fade
+          opacity: 1, // Animação para opacidade 1
+        },
+      );
+
+      gsap.fromTo(
+        '.first-img-desktop',
+        { opacity: 0 },
+        {
+          duration: 1.3,
+          opacity: 1,
+        },
+      );
+
+      gsap.fromTo(
+        '.second-img-desktop',
+        { opacity: 0 },
+        { duration: 1.3, opacity: 1 }, // Adiciona um pequeno atraso para suavidade
+      );
+
+      return nextImages;
+    });
+    setIdx((prevIdx) =>
+      prevIdx === imagesList.desktop.length - 1 ? 0 : prevIdx + 1,
+    );
+  }
+
+
+
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveImage(() => {
-        const nextImages = isDesktop
-          ? imagesList.desktop[idx]
-          : imagesList.mobile[idx];
-
-        // Realize a animação de fade
-        gsap.fromTo(
-          '.mobile-img',
-          {
-            opacity: 0, // Comece com opacidade 0
-          },
-          {
-            duration: 1.3, // Duração do fade
-            opacity: 1, // Animação para opacidade 1
-            onComplete: () => {
-              setActiveImage(nextImages);
-            },
-          },
-        );
-
-        gsap.fromTo(
-          '.first-img-desktop',
-          { opacity: 0 },
-          {
-            duration: 1.3,
-            opacity: 1,
-            onComplete: () => {
-              setActiveImage(nextImages);
-            },
-          },
-        );
-
-        gsap.fromTo(
-          '.second-img-desktop',
-          { opacity: 0 },
-          { duration: 1.3, opacity: 1 }, // Adiciona um pequeno atraso para suavidade
-        );
-
-        return nextImages;
-      });
-      setIdx((prevIdx) =>
-        prevIdx === imagesList.desktop.length - 1 ? 0 : prevIdx + 1,
-      );
+      changeImage();
     }, IMAGES_TIME_CHANGER * 1000);
 
     return () => clearInterval(interval);
