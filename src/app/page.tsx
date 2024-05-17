@@ -148,7 +148,7 @@ export default function Home() {
         <p className="tracking-[6px] md:tracking-[11px] text-center font-baskervville uppercase " style={{
           fontSize: isDesktop ? '1.5rem' : '0.92rem',
           fontWeight: 100,
-          paddingBottom: isIphone ? '32px' : undefined,
+          paddingBottom: isIphone ? '32px' : isDesktop ? undefined : '24px',
 
           }}>
             {mainData.description}
