@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import mainData from '@/data/main-data';
-import { DESKTOP_IMAGES, MOBILE_IMAGES } from '@/data';
+import { IMAGES } from '@/data';
 
 import { gsap } from 'gsap';
 import RenderConditional from '@/components/RenderConditional/renderConditional.component';
@@ -14,49 +14,49 @@ import { useAppContext } from '@/context';
 
 export default function Home() {
   const [isIphone, setIsIphone] = useState(false);
-  const [idx, setIdx] = useState(0);
-  const imagesList = {
-    desktop: DESKTOP_IMAGES,
-    mobile: MOBILE_IMAGES,
-  };
-  const [activeImage, setActiveImage] = useState(imagesList.desktop[idx]);
+  const [idx, setIdx] = useState<number>(0);
   const { isDesktop } = useAppContext();
 
   const changeImage = useCallback(() => {
-    setActiveImage(() => {
-      const nextImages = isDesktop
-        ? imagesList.desktop[idx]
-        : imagesList.mobile[idx];
-
-      // Realize a animação de fade
-      gsap.fromTo(
-        '.img',
-        {
-          opacity: 0, // Comece com opacidade 0
-        },
-        {
-          duration: 1.3, // Duração do fade
-          opacity: 1, // Animação para opacidade 1
-        },
-      );
-
-      return nextImages;
-    });
-    setIdx((prevIdx) =>
-      prevIdx === imagesList.desktop.length - 1 ? 0 : prevIdx + 1,
+    // Realize a animação de fade
+    gsap.fromTo(
+      '.img',
+      {
+        opacity: 0, // Comece com opacidade 0
+      },
+      {
+        duration: 1.3, // Duração do fade
+        opacity: 1, // Animação para opacidade 1
+      },
     );
-  }, [idx, isDesktop, imagesList.desktop, imagesList.mobile]);
+  }, []);
+
+  useEffect(() => {
+    changeImage();
+  }, [changeImage, idx]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      changeImage();
+      setIdx((prevIdx) => {
+        if (isDesktop) {
+          if (prevIdx === IMAGES.length - 2) {
+            return 0;
+          }
+          return prevIdx + 2;
+        } else {
+          if (prevIdx === IMAGES.length - 1) {
+            return 0;
+          }
+          return prevIdx + 1;
+        }
+      });
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [changeImage]);
+  }, [isDesktop]);
 
   const verifyIfIsIphone = () => {
-    const userAgent = window.navigator.userAgent;  
+    const userAgent = window.navigator.userAgent;
     const isIphone = /iPhone/.test(userAgent);
 
     if (isIphone && !/CriOS/.test(userAgent)) {
@@ -98,14 +98,14 @@ export default function Home() {
             <div className="flex-1 relative h-screen">
               <Image
                 className={`h-full ${
-                  activeImage[0].src === '/assets/gray.jpeg'
+                  IMAGES[idx].src === '/assets/gray.jpeg'
                     ? 'bg-bottom'
                     : 'bg-center'
                 } object-cover opacity-[0] bg-cover brightness-50 img`}
                 loading="eager"
-                src={activeImage[0].src}
+                src={IMAGES[idx].src}
                 layout="fill"
-                alt={activeImage[0].alt}
+                alt={IMAGES[idx].alt}
               />
             </div>
             <div className="flex-1 relative h-screen">
@@ -113,8 +113,8 @@ export default function Home() {
                 className="h-full opacity-[0] brightness-50 object-cover bg-center img bg-cover"
                 loading="eager"
                 layout="fill"
-                src={activeImage[1].src}
-                alt={activeImage[1].alt}
+                src={IMAGES[idx + 1].src}
+                alt={IMAGES[idx + 1].alt}
               />
             </div>
           </>
@@ -124,8 +124,8 @@ export default function Home() {
             <Image
               className="img opacity-[0] object-cover bg-cover brightness-50 "
               layout="fill"
-              src={activeImage[0].src}
-              alt={activeImage[0].alt}
+              src={IMAGES[idx].src}
+              alt={IMAGES[idx].alt}
             />
           </div>
         }
@@ -137,25 +137,30 @@ export default function Home() {
           paddingBottom: isDesktop ? undefined : isIphone ? '120px' : '64px',
         }}
       >
-        <div className={`flex flex-col relative items-center mx-auto`} style={{
+        <div
+          className={`flex flex-col relative items-center mx-auto`}
+          style={{
             width: isDesktop ? '300px' : '240px',
-            aspectRatio: 3.91
-            }}>
-          <Image
-            layout="fill"
-            src="/assets/brand/logo.png"
-            alt="Logo"
-          />
+            aspectRatio: 3.91,
+          }}
+        >
+          <Image layout="fill" src="/assets/brand/logo.png" alt="Logo" />
         </div>
-        <p className="tracking-[6px] md:tracking-[11px] text-center font-baskervville uppercase " style={{
-          fontSize: isDesktop ? '1.5rem' : '0.92rem',
-          fontWeight: 100,
-          paddingBottom: isDesktop ? undefined : '32px',
-
-          }}>
-            {mainData.description}
-          </p>
-        <div className={`flex flex-col items-center mt-[${isDesktop ? '120px' : '64px'}]`}>
+        <p
+          className="tracking-[6px] md:tracking-[11px] text-center font-baskervville uppercase "
+          style={{
+            fontSize: isDesktop ? '1.5rem' : '0.92rem',
+            fontWeight: 100,
+            paddingBottom: isDesktop ? undefined : '32px',
+          }}
+        >
+          {mainData.description}
+        </p>
+        <div
+          className={`flex flex-col items-center mt-[${
+            isDesktop ? '120px' : '64px'
+          }]`}
+        >
           <div className="flex items-center gap-3 ">
             <h2 className="font-baskervville tracking-[4px]">
               {mainData.contact.title}
